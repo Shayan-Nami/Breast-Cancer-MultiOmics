@@ -2,12 +2,6 @@
 
 ### How to run the code
 
-Download the dataset files from one of the following sources:
-
-* GDC Data Portal: https://portal.gdc.cancer.gov/
-* cBioPortal: https://www.cbioportal.org/
-* UCSC Xena: https://xenabrowser.net/datapages/
-
 ---
 
 ### 📥 Required Files
@@ -46,3 +40,4 @@ project-root/
   Reading.ipynb
   ```
 * Make sure all three datasets contain **matching patient IDs**
+
