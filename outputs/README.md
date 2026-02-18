@@ -112,4 +112,5 @@ with open("outputs/models/random_forest_model.pkl", "rb") as f:
 
 * Do **not manually edit** files in this directory
 * You can safely delete this folder to re-run the pipeline from scratch
-* Large files are ignored in `.gitignore`
+
+
