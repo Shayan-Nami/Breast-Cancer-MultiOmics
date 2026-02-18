@@ -122,17 +122,6 @@ Execute notebooks in order from **01 → 06**
 outputs/
 ```
 
----
 
-## 📈 Future Work
 
-* 🔬 Apply **Deep Learning models** (Autoencoders) for feature extraction
-* 🌍 Validate biomarkers using external datasets (TCGA / GEO)
-* 📊 Add **SHAP explainability** for biological interpretation
-
----
-
-## 👤 Author
-
-**Your Name**
 
