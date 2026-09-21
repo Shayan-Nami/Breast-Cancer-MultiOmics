@@ -49,75 +49,107 @@ The workflow is implemented in **6 sequential Jupyter Notebooks**, ensuring modu
 
 ---
 
-## 📂 Project Structure
+## 📂 Repository Architecture
 
-Run notebooks in the following order:
+```text
+Breast-Cancer-MultiOmics/
+├── data/                    # Primary raw TCGA-BRCA datasets & detailed documentation
+│   └── README.md
+├── notebooks/               # 6 sequential interactive Jupyter Notebooks
+│   ├── Reading.ipynb
+│   ├── preprocessing.ipynb
+│   ├── Feature_Selection_1.ipynb
+│   ├── Feature Selection_2.ipynb
+│   ├── Feature Selection_3.ipynb
+│   ├── Feature Selection_4.ipynb
+│   └── README.md            # Detailed step-by-step notebook execution guide
+├── src/                     # Shared core Python modules and feature selection algorithms
+│   ├── __init__.py          # Clean public API exports
+│   ├── utils.py             # IO, ReliefF, mRMR, Nested CV, Metrics, and Visualizations
+│   └── README.md            # Module API documentation and code examples
+├── outputs/                 # Artifacts, pre-trained models, matrices, and evaluation logs
+│   ├── models/              # Pre-trained models (Random Forest, Linear SVM, KNN)
+│   ├── results/             # Metrics, confusion matrices, ablation study, sensitivity curves
+│   ├── logs/                # Chronological execution logs
+│   └── README.md            # Output directory structure and format specifications
+├── run_pipeline.py          # Standalone end-to-end pipeline runner
+├── requirements.txt         # Pinned Python package dependencies
+├── LICENSE                  # Open-source license
+└── README.md                # Main repository documentation
+```
 
-| Step | Notebook                    | Description                            |
-| ---- | --------------------------- | -------------------------------------- |
-| 01   | `Reading.ipynb`             | Load datasets and synchronize patients |
-| 02   | `preprocessing.ipynb`       | Data split, imputation, normalization  |
-| 03   | `Feature_Selection-1.ipynb` | Variance Threshold                     |
-| 04   | `Feature Selection_2.ipynb` | ANOVA feature selection                |
-| 05   | `Feature Selection_3.ipynb` | ReliefF selection                      |
-| 06   | `Feature Selection_4.ipynb` | mRMR + SMOTE + modeling                |
+### Notebook Execution Sequence
+
+| Step | Notebook                    | Phase Description                                            | Primary Output Artifacts |
+| :--- | :-------------------------- | :----------------------------------------------------------- | :----------------------- |
+| 01   | `Reading.ipynb`             | Data Ingestion & Patient Barcode Synchronization ($N=549$)    | `X_*_raw.parquet`, `y_labels.parquet` |
+| 02   | `preprocessing.ipynb`       | Stratified Train/Test Split (80/20) & In-Train Median Imputation | `X_train/test_*_imp.npz`, `y_train/test` |
+| 03   | `Feature_Selection_1.ipynb` | Variance Threshold (20th percentile) & MinMax Scaling $[0, 1]$ | `X_train/test_*_var.npz` |
+| 04   | `Feature Selection_2.ipynb` | Univariate ANOVA F-test Filter (Top 500 per modality)         | `X_train/test_*_anova.npz` |
+| 05   | `Feature Selection_3.ipynb` | Multi-Class ReliefF Nearest-Neighbor Wrapper (Top 150)       | `X_train/test_*_relief.npz` |
+| 06   | `Feature Selection_4.ipynb` | mRMR (Top 50), Nested CV, In-Fold Tuning, and Held-Out Test   | `models/*.pkl`, `results/*` |
 
 ---
 
 ## 📊 Results
 
-Models were evaluated on a held-out **test set**.
+Models were evaluated using **True In-Fold Nested Cross-Validation (RepeatedStratifiedKFold, 10 folds)** to eliminate selection bias, and finally evaluated on a fresh, held-out **test set (N = 110 samples)** with **95% Bootstrap Confidence Intervals**.
 
-| Model | Accuracy | Features | Pipeline |
-|------|---------|---------|----------|
-| 🏆 **Random Forest** | **84.55%** | 50 | Variance → ANOVA → ReliefF → mRMR |
-| SVM | 82.73% | 50 | Same pipeline |
-| KNN | 68.18% | 50 | Same pipeline |
+| Model | Test Accuracy (95% CI) | Balanced Acc | Macro F1 (95% CI) | Weighted F1 | Nested CV Accuracy | Features |
+|-------|------------------------|--------------|-------------------|-------------|--------------------|----------|
+| 🏆 **Random Forest** | **86.36%** [80.00% - 92.73%] | **88.72%** | **89.01%** [83.20% - 93.67%] | **86.49%** | 89.86% ± 2.61% | 50 Multi-Omics |
+| 🥈 **SVM (Linear)** | **84.55%** [78.18% - 90.00%] | **90.18%** | **88.65%** [83.53% - 92.85%] | **85.25%** | 89.18% ± 2.09% | 50 Multi-Omics |
+| 🥉 **KNN (k=5)** | **76.36%** [68.18% - 83.64%] | **84.89%** | **80.46%** [71.53% - 87.76%] | **77.55%** | 86.33% ± 2.89% | 50 Multi-Omics |
 
+### 🔬 Systematic Ablation Study (Fixed Classifier: SVM, 5-Fold CV)
 
-> ℹ️ The **mRMR step** significantly improved performance by removing redundant and highly correlated genes.
+| Configuration | RNA Features | Methylation Features | CV Accuracy | CV Balanced Accuracy | CV Macro F1 |
+|---------------|--------------|----------------------|-------------|----------------------|-------------|
+| **RNA-Seq Only (Top 50)** | 50 | 0 | **93.40%** | **93.19%** | 92.51% |
+| **Methylation Only (Top 50)** | 0 | 50 | 82.00% | 82.13% | 81.49% |
+| **Multi-Omics: Direct (ANOVA → mRMR)** | 31 | 19 | **92.03%** | 91.20% | 91.27% |
+| **Multi-Omics: Full (ANOVA → ReliefF → mRMR)** | 31 | 19 | 90.88% | **91.50%** | 91.04% |
+| **Multi-Omics: Without mRMR (ReliefF 50)** | 25 | 25 | 80.86% | 81.04% | 80.52% |
+| **Multi-Omics: ANOVA Only (Top 50)** | 25 | 25 | 82.47% | 85.50% | 84.75% |
+
+> ℹ️ **Key Insights:**
+> 1. In the final 50 biomarkers, exactly **19 features (38.0%)** are DNA Methylation and **31 features (62.0%)** are RNA.
+> 2. Integrating **mRMR boosts classification accuracy by +10.02% to +11.17%** over filter/wrapper stages alone.
+> 3. Canonical PAM50 biomarkers (*ESR1*, *PGR*, *FOXA1*, *ERBB2*, *MKI67*) are preserved throughout the pipeline.
+> 4. Biological pathway analysis confirms significant enrichment of estrogen-receptor signaling (*ESR-mediated signaling*, Reactome FDR = $2.83 \times 10^{-7}$) and dense protein interaction interactome (STRING PPI $p = 8.37 \times 10^{-11}$).
 
 ---
 
 ## 🛠️ Installation
 
-Make sure you have Python installed, then run:
+Make sure you have Python (>= 3.9) installed, then install all dependencies:
 
 ```bash
-pip install numpy pandas matplotlib seaborn scikit-learn
-```
-
-If you used a specific mRMR library, also install:
-
-```bash
-pip install pymrmr
+pip install -r requirements.txt
 ```
 
 ---
 
 ## 🚀 How to Run
 
-### 1. Clone the repository
+### Option A: End-to-End Execution via Standalone Script (Recommended)
+Run the entire pipeline automatically from start to finish:
 
 ```bash
-git clone https://github.com/YourUsername/Breast-Cancer-Subtype-Prediction.git
-cd Breast-Cancer-Subtype-Prediction
+python run_pipeline.py
 ```
+This will harmonize data, preprocess, perform all 4 feature selection phases, run true in-fold nested CV, train and evaluate final models, save all outputs, metrics CSV, confusion matrix plots, and execution logs.
 
-### 2. Prepare data
+### Option B: Step-by-Step Jupyter Notebooks
+Execute notebooks sequentially from **01 → 06**:
+1. `notebooks/Reading.ipynb`
+2. `notebooks/preprocessing.ipynb`
+3. `notebooks/Feature_Selection_1.ipynb`
+4. `notebooks/Feature Selection_2.ipynb`
+5. `notebooks/Feature Selection_3.ipynb`
+6. `notebooks/Feature Selection_4.ipynb`
 
-Place the following datasets in the project root (or update paths inside `Reading.ipynb`):
-
-* RNA-Seq data
-* DNA Methylation data
-* Clinical labels
-
-### 3. Run notebooks
-
-Execute notebooks in order from **01 → 06**
-
-📁 Intermediate processed files will be automatically saved in:
-
+📁 Intermediate and final files will be saved in:
 ```
 outputs/
 ```

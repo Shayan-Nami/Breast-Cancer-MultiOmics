@@ -1,0 +1,64 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary data and run logs
+*.tmp
+*.log
+
+# Large binary datasets, matrices, and pickle artifacts
+*.pkl
+data/*.gz
+data/*.tsi
+data/*.csv
+outputs/*.pkl
+outputs/*.npz
+outputs/*.parquet
+outputs/preprocessed/
+outputs/feature_selection/
+outputs/models/
+outputs/logs/
+
+# Local tools and scripts
+GEMINI.md
+update_all_notebooks.py
+.licenses/
