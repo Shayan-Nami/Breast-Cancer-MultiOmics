@@ -1,0 +1,8 @@
+{
+  "number_of_nodes": 17,
+  "number_of_edges": 1,
+  "average_node_degree": 0.12,
+  "local_clustering_coefficient": 0.118,
+  "expected_number_of_edges": 2,
+  "p_value": 0.7887
+}
