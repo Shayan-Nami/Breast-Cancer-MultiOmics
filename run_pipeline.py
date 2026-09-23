@@ -491,6 +491,7 @@ def run_pipeline(data_dir='data', output_dir='outputs', split_seed=100, cv_seed=
     fold_idx = 0
     for tr_idx, val_idx in rep_cv.split(X_train_rna_var, y_train_arr):
         fold_idx += 1
+        print(f"   -> Processing Nested Fold {fold_idx}/10...")
         r_tr, r_val = X_train_rna_var[tr_idx], X_train_rna_var[val_idx]
         m_tr, m_val = X_train_meth_var[tr_idx], X_train_meth_var[val_idx]
         y_tr, y_val = y_train_arr[tr_idx], y_train_arr[val_idx]
@@ -683,13 +684,18 @@ def run_pipeline(data_dir='data', output_dir='outputs', split_seed=100, cv_seed=
         print("\n Classification Report:")
         print(classification_report(y_test, y_test_pred, target_names=target_names))
 
-        # Save model
-        clean_mname = m_name.split()[0].lower()
-        save_object(clf, f"{clean_mname}_model", os.path.join(output_dir, 'models'))
+        # Standardized model and confusion matrix file names (matching documentation)
+        name_map = {
+            'SVM (Linear)': ('svm_model', 'confusion_matrix_SVM.png'),
+            'Random Forest': ('random_forest_model', 'confusion_matrix_RF.png'),
+            'KNN (k=5)': ('knn_model', 'confusion_matrix_KNN.png')
+        }
+        m_save_name, cm_file_name = name_map.get(m_name, (m_name.lower().replace(' ', '_'), f"confusion_matrix_{m_name}.png"))
+        save_object(clf, m_save_name, os.path.join(output_dir, 'models'))
 
         # Save confusion matrix plot without empty figure (Item 10)
-        cm_path = os.path.join(output_dir, 'results', f'confusion_matrix_{clean_mname}.png')
-        plot_confusion_matrix(y_test, y_test_pred, target_names, f"{m_name} (Acc: {acc*100:.1f}%)", cm_path)
+        cm_path = os.path.join(output_dir, 'results', cm_file_name)
+        plot_confusion_matrix(y_test, y_test_pred, target_names, f"{m_name} (Acc: {acc*100:.1f}%)", cm_path, close_fig=True)
 
         cv_info = next((item for item in cv_summary if item['Model'] == m_name and item['Strategy'] == 'SMOTE'), {})
         final_metrics_records.append({

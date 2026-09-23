@@ -72,7 +72,7 @@ X_train = load_object('X_train_rna_relief')
 y_train = load_object('y_train')
 
 # 2. Select top 50 features via mRMR
-selected_indices = mrmr_feature_selection(X_train, y_train, n_features_to_select=50)
+selected_indices, _, _ = mrmr_feature_selection(X_train, y_train, k=50)
 X_train_sub = X_train[:, selected_indices]
 
 # 3. Tune models in-fold

@@ -38,15 +38,28 @@ def resolve_dir(d='../outputs'):
     """
     Intelligently resolves the outputs/inputs directory path regardless of whether
     the caller is executing from the project root or inside the notebooks/ directory.
+    Prevents path leakage to parent/desktop folders for nested subdirectories.
     """
     if os.path.exists(d):
         return d
-    # If caller is at root and d is '../outputs', resolve to 'outputs'
-    if d in ('../outputs', '..\\outputs') and os.path.exists('outputs'):
-        return 'outputs'
-    # If caller is in notebooks/ and d is 'outputs', resolve to '../outputs'
-    if d == 'outputs' and os.path.exists('../outputs'):
-        return '../outputs'
+
+    norm_d = os.path.normpath(d)
+    parts = norm_d.split(os.sep)
+
+    # If caller is at root and path starts with '..' / 'outputs'
+    if len(parts) >= 2 and parts[0] == '..' and parts[1] == 'outputs':
+        rel_sub = os.sep.join(parts[2:]) if len(parts) > 2 else ''
+        candidate = os.path.join('outputs', rel_sub) if rel_sub else 'outputs'
+        if os.path.exists('outputs'):
+            return candidate
+
+    # If caller is in notebooks/ and path starts with 'outputs'
+    if parts[0] == 'outputs':
+        rel_sub = os.sep.join(parts[1:]) if len(parts) > 1 else ''
+        candidate = os.path.join('..', 'outputs', rel_sub) if rel_sub else os.path.join('..', 'outputs')
+        if os.path.exists(os.path.join('..', 'outputs')):
+            return candidate
+
     return d
 
 
@@ -227,14 +240,17 @@ def reliefF_multiclass(X, y, n_neighbors=10, n_features_to_select=150):
 reliefF = reliefF_multiclass
 
 
-def mrmr_selection(X, y, k=50, method='mi_corr', random_state=42):
+def mrmr_selection(X, y, k=50, method='mi_corr', random_state=42, n_features_to_select=None):
     """
     Minimum Redundancy Maximum Relevance (mRMR) Feature Selection.
     Supports:
     - 'mi_corr': Relevance = Normalized Mutual Information, Redundancy = Pearson |Correlation|
     - 'mid': True Mutual Information Difference (Relevance = MI, Redundancy = Pairwise Feature-Feature MI)
     """
+    if n_features_to_select is not None:
+        k = n_features_to_select
     n_features = X.shape[1]
+    k = max(1, min(k, n_features))
     y_arr = np.asarray(y).ravel()
     relevance = mutual_info_classif(X, y_arr, random_state=random_state)
 
@@ -438,7 +454,7 @@ def jaccard_similarity(set_a, set_b):
     return intersection / union if union > 0 else 0.0
 
 
-def plot_confusion_matrix(y_true, y_pred, target_names, title, save_path=None, cmap='Blues'):
+def plot_confusion_matrix(y_true, y_pred, target_names, title, save_path=None, cmap='Blues', close_fig=False):
     """
     Plots a confusion matrix cleanly on an explicitly created Figure and Axes,
     preventing the empty figure bug.
@@ -457,4 +473,6 @@ def plot_confusion_matrix(y_true, y_pred, target_names, title, save_path=None, c
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         fig.savefig(save_path, dpi=300, bbox_inches='tight')
+        if close_fig:
+            plt.close(fig)
     return fig, ax

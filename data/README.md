@@ -10,9 +10,9 @@ The pipeline expects three source files located in `data/`:
 
 | File Name | Data Type | Dimensions / Size | Platform / Technology | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `Human_TCGA_BRCA_UNC_RNAseq_HiSeq_RNA_01_28_2016_BI_Gene_Firehose.gz` | Transcriptomics (RNA-Seq) | 20,531 genes × 1,212 samples (~52 MB) | Illumina HiSeq 2000 (RSEM normalized counts) | Log2-transformed gene-level normalized mRNA expression |
-| `Human_TCGA_BRCA_JHU_USC_Methylation_Meth450_01_28_2016_BI_Gene_Firehose.gz` | Epigenomics (DNA Methylation) | 20,107 genes × 845 samples (~33 MB) | Illumina Infinium HumanMethylation450 BeadChip | Beta values ($\beta \in [0, 1]$) aggregated at gene-level promoter regions |
-| `Human_TCGA_BRCA_MS_Clinical_Clinical_01_28_2016_BI_Clinical_Firehose.tsi` | Clinical & Phenotypic Data | 111 features × 1,098 patients (~150 KB) | Curated TCGA Clinical Annotations | Patient metadata including PAM50 subtype classification |
+| `Human_TCGA_BRCA_UNC_RNAseq_HiSeq_RNA_01_28_2016_BI_Gene_Firehose.gz` | Transcriptomics (RNA-Seq) | 20,155 genes × 1,093 samples (~52 MB) | Illumina HiSeq 2000 (RSEM normalized counts) | Log2-transformed gene-level normalized mRNA expression |
+| `Human_TCGA_BRCA_JHU_USC_Methylation_Meth450_01_28_2016_BI_Gene_Firehose.gz` | Epigenomics (DNA Methylation) | 20,106 genes × 783 samples (~33 MB) | Illumina Infinium HumanMethylation450 BeadChip | Beta values ($\beta \in [0, 1]$) aggregated at gene-level promoter regions |
+| `Human_TCGA_BRCA_MS_Clinical_Clinical_01_28_2016_BI_Clinical_Firehose.tsi` | Clinical & Phenotypic Data | 20 features × 1,097 patients (~150 KB) | Curated TCGA Clinical Annotations | Patient metadata including PAM50 subtype classification |
 
 ---
 
@@ -22,11 +22,11 @@ Not all TCGA-BRCA patients have both RNA-Seq and Methylation profiles along with
 
 ```mermaid
 flowchart TD
-    RNA["RNA-Seq HiSeq (1,212 samples)"] --> INT["Patient Barcode Intersection (TCGA-XX-XXXX)"]
-    METH["Methylation 450K (845 samples)"] --> INT
-    CLIN["Clinical PAM50 Labels (1,098 patients)"] --> INT
+    RNA["RNA-Seq HiSeq (1,093 samples)"] --> INT["Patient Barcode Intersection (TCGA-XX-XXXX)"]
+    METH["Methylation 450K (783 samples)"] --> INT
+    CLIN["Clinical PAM50 Labels (1,097 patients)"] --> INT
     INT --> FINAL["549 Synchronized Primary Tumor Patients"]
-    FINAL --> DIST["Class Distribution:<br/>• Luminal A: 279 (50.8%)<br/>• Luminal B: 111 (20.2%)<br/>• Basal-like: 124 (22.6%)<br/>• HER2-enriched: 35 (6.4%)"]
+    FINAL --> DIST["Class Distribution:<br/>• Luminal A: 296 (53.9%)<br/>• Luminal B: 122 (22.2%)<br/>• Basal-like: 96 (17.5%)<br/>• HER2-enriched: 35 (6.4%)"]
 ```
 
 - **Target Variable**: PAM50 intrinsic breast cancer subtype (`PAM50_Subtype` or `PAM50Call_RNAseq`).

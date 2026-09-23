@@ -97,26 +97,27 @@ Models were evaluated using **True In-Fold Nested Cross-Validation (RepeatedStra
 
 | Model | Test Accuracy (95% CI) | Balanced Acc | Macro F1 (95% CI) | Weighted F1 | Nested CV Accuracy | Features |
 |-------|------------------------|--------------|-------------------|-------------|--------------------|----------|
-| 🏆 **Random Forest** | **86.36%** [80.00% - 92.73%] | **88.72%** | **89.01%** [83.20% - 93.67%] | **86.49%** | 89.86% ± 2.61% | 50 Multi-Omics |
-| 🥈 **SVM (Linear)** | **84.55%** [78.18% - 90.00%] | **90.18%** | **88.65%** [83.53% - 92.85%] | **85.25%** | 89.18% ± 2.09% | 50 Multi-Omics |
-| 🥉 **KNN (k=5)** | **76.36%** [68.18% - 83.64%] | **84.89%** | **80.46%** [71.53% - 87.76%] | **77.55%** | 86.33% ± 2.89% | 50 Multi-Omics |
+| 🏆 **Random Forest** | **87.27%** [80.91% - 93.64%] | **89.14%** | **89.59%** [83.91% - 94.31%] | **87.31%** | 89.75% ± 3.01% | 50 Multi-Omics |
+| 🥈 **SVM (Linear)** | **84.55%** [78.18% - 90.00%] | **90.18%** | **88.65%** [83.53% - 92.85%] | **85.25%** | 90.09% ± 2.40% | 50 Multi-Omics |
+| 🥉 **KNN (k=5)** | **78.18%** [70.89% - 85.45%] | **85.17%** | **81.36%** [72.40% - 88.24%] | **79.22%** | 85.76% ± 2.35% | 50 Multi-Omics |
 
 ### 🔬 Systematic Ablation Study (Fixed Classifier: SVM, 5-Fold CV)
 
 | Configuration | RNA Features | Methylation Features | CV Accuracy | CV Balanced Accuracy | CV Macro F1 |
 |---------------|--------------|----------------------|-------------|----------------------|-------------|
-| **RNA-Seq Only (Top 50)** | 50 | 0 | **93.40%** | **93.19%** | 92.51% |
-| **Methylation Only (Top 50)** | 0 | 50 | 82.00% | 82.13% | 81.49% |
+| **Multi-Omics: mRMR MID Variant (Top 50)** | 43 | 7 | **93.16%** | **93.49%** | **92.71%** |
+| **RNA-Seq Only (Top 50 mRMR)** | 50 | 0 | **93.40%** | **93.19%** | 92.51% |
 | **Multi-Omics: Direct (ANOVA → mRMR)** | 31 | 19 | **92.03%** | 91.20% | 91.27% |
 | **Multi-Omics: Full (ANOVA → ReliefF → mRMR)** | 31 | 19 | 90.88% | **91.50%** | 91.04% |
-| **Multi-Omics: Without mRMR (ReliefF 50)** | 25 | 25 | 80.86% | 81.04% | 80.52% |
 | **Multi-Omics: ANOVA Only (Top 50)** | 25 | 25 | 82.47% | 85.50% | 84.75% |
+| **Methylation Only (Top 50 mRMR)** | 0 | 50 | 82.00% | 82.13% | 81.49% |
+| **Multi-Omics: Without mRMR (ReliefF 50)** | 25 | 25 | 80.86% | 81.04% | 80.52% |
 
 > ℹ️ **Key Insights:**
 > 1. In the final 50 biomarkers, exactly **19 features (38.0%)** are DNA Methylation and **31 features (62.0%)** are RNA.
-> 2. Integrating **mRMR boosts classification accuracy by +10.02% to +11.17%** over filter/wrapper stages alone.
-> 3. Canonical PAM50 biomarkers (*ESR1*, *PGR*, *FOXA1*, *ERBB2*, *MKI67*) are preserved throughout the pipeline.
-> 4. Biological pathway analysis confirms significant enrichment of estrogen-receptor signaling (*ESR-mediated signaling*, Reactome FDR = $2.83 \times 10^{-7}$) and dense protein interaction interactome (STRING PPI $p = 8.37 \times 10^{-11}$).
+> 2. Integrating **mRMR boosts classification accuracy by +10.02% to +12.30%** over filter/wrapper stages alone.
+> 3. Canonical estrogen and luminal drivers (*ESR1*, *FOXA1*, *GATA3*, *MLPH*) are preserved among the top 50 biomarkers, while *ERBB2* and *MKI67* were filtered out during ANOVA as multi-omics features (e.g. *Meth_LRRC6*, *RNA_CENPA*) provided stronger non-redundant predictive power.
+> 4. Biological pathway analysis confirms significant enrichment of estrogen-receptor signaling (*ESR-mediated signaling*, Reactome FDR = $3.91 \times 10^{-8}$) and dense protein interaction interactome (STRING PPI $p = 3.33 \times 10^{-16}$).
 
 ---
 

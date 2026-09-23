@@ -13,10 +13,10 @@ outputs/
 │
 ├── 📦 Pickle Files (.pkl) - Metadata & Feature Lists
 │   ├── patient_ids.pkl                    # 549 synchronized TCGA-BRCA patient barcodes
-│   ├── rna_feature_names.pkl              # 20,531 raw RNA-Seq gene symbols
-│   ├── meth_feature_names.pkl             # 20,107 raw Methylation CpG gene names
-│   ├── feat_names_rna_var.pkl             # 16,104 RNA genes passing Variance Threshold
-│   ├── feat_names_meth_var.pkl            # 16,104 Methylation genes passing Variance Threshold
+│   ├── rna_feature_names.pkl              # 20,155 raw RNA-Seq gene symbols
+│   ├── meth_feature_names.pkl             # 20,106 raw Methylation CpG gene names
+│   ├── feat_names_rna_var.pkl             # 16,124 RNA genes passing Variance Threshold
+│   ├── feat_names_meth_var.pkl            # 16,084 Methylation genes passing Variance Threshold
 │   ├── feat_names_rna_anova.pkl           # Top 500 RNA genes selected by ANOVA F-test
 │   ├── feat_names_meth_anova.pkl          # Top 500 Methylation genes selected by ANOVA F-test
 │   ├── feat_names_rna_relief.pkl          # Top 150 RNA genes selected by ReliefF
@@ -24,8 +24,8 @@ outputs/
 │   └── Final_Feature_Names.pkl            # Final 50 multi-omics biomarker names (mRMR)
 │
 ├── 📦 Parquet Files (.parquet) - High-Throughput Tabular Data
-│   ├── X_rna_raw.parquet                  # Full raw RNA-Seq matrix (549 samples × 20,531 genes)
-│   ├── X_meth_raw.parquet                 # Full raw Methylation matrix (549 samples × 20,107 genes)
+│   ├── X_rna_raw.parquet                  # Full raw RNA-Seq matrix (549 samples × 20,155 genes)
+│   ├── X_meth_raw.parquet                 # Full raw Methylation matrix (549 samples × 20,106 genes)
 │   ├── y_labels.parquet                   # Subtype labels for all 549 patients (LumA, LumB, Her2, Basal)
 │   ├── y_train.parquet                    # Train labels (N = 439 samples, 80%)
 │   ├── y_test.parquet                     # Test labels (N = 110 samples, 20% isolated)
@@ -76,10 +76,10 @@ Pickle (`.pkl`) is Python's native binary serialization format. In this project,
 | File Name | Size | Type / Contents | Description & Role |
 | :--- | :--- | :--- | :--- |
 | `patient_ids.pkl` | 11 KB | `list[str]` ($N=549$) | Ordered TCGA barcodes (e.g. `'TCGA-A1-A0SD'`) of primary tumor patients synchronized across all 3 data layers. |
-| `rna_feature_names.pkl` | 175 KB | `list[str]` ($N=20,531$) | Canonical HGNC gene symbols representing the unscaled mRNA features (e.g. `ESR1`, `ERBB2`, `PGR`, `MKI67`). |
-| `meth_feature_names.pkl` | 176 KB | `list[str]` ($N=20,107$) | Gene symbols representing promoter-associated CpG island methylation probes from Infinium 450K. |
-| `feat_names_rna_var.pkl` | 140 KB | `list[str]` ($N=16,104$) | RNA gene names retained after Phase 1 Variance Thresholding (top 80% most variable genes). |
-| `feat_names_meth_var.pkl` | 142 KB | `list[str]` ($N=16,104$) | Methylation gene names retained after Phase 1 Variance Thresholding. |
+| `rna_feature_names.pkl` | 175 KB | `list[str]` ($N=20,155$) | Canonical HGNC gene symbols representing the unscaled mRNA features (e.g. `ESR1`, `FOXA1`, `MLPH`, `GATA3`). |
+| `meth_feature_names.pkl` | 176 KB | `list[str]` ($N=20,106$) | Gene symbols representing promoter-associated CpG island methylation probes from Infinium 450K. |
+| `feat_names_rna_var.pkl` | 140 KB | `list[str]` ($N=16,124$) | RNA gene names retained after Phase 1 Variance Thresholding (top 80% most variable genes). |
+| `feat_names_meth_var.pkl` | 142 KB | `list[str]` ($N=16,084$) | Methylation gene names retained after Phase 1 Variance Thresholding. |
 | `feat_names_rna_anova.pkl` | 4.2 KB | `list[str]` ($N=500$) | Top 500 RNA genes ranked by ANOVA F-test statistical significance across PAM50 classes. |
 | `feat_names_meth_anova.pkl` | 4.2 KB | `list[str]` ($N=500$) | Top 500 Methylation genes ranked by ANOVA F-test. |
 | `feat_names_rna_relief.pkl` | 1.3 KB | `list[str]` ($N=150$) | Top 150 RNA genes selected by multi-class ReliefF nearest-neighbor wrapper. |
@@ -142,12 +142,12 @@ NumPy Compressed Archive (`.npz`) format stores continuous high-dimensional arra
 
 | File Name | Shape ($N \times P$) | Uncompressed Size | Compressed Size | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `X_train_rna_imp.npz` | $439 \times 20,531$ | ~72 MB | ~22 MB | Log2-transformed, median-imputed RNA training matrix. |
-| `X_test_rna_imp.npz` | $110 \times 20,531$ | ~18 MB | ~5.5 MB | Imputed RNA test matrix (imputed strictly using train medians). |
-| `X_train_meth_imp.npz` | $439 \times 20,107$ | ~70 MB | ~23 MB | Median-imputed Methylation beta training matrix. |
-| `X_test_meth_imp.npz` | $110 \times 20,107$ | ~17 MB | ~5.8 MB | Imputed Methylation test matrix. |
-| `X_train_rna_var.npz` | $439 \times 16,104$ | ~56 MB | ~23 MB | Variance-filtered & MinMax normalized RNA training matrix $[0, 1]$. |
-| `X_train_meth_var.npz` | $439 \times 16,104$ | ~56 MB | ~23 MB | Variance-filtered & MinMax normalized Methylation training matrix. |
+| `X_train_rna_imp.npz` | $439 \times 20,155$ | ~72 MB | ~22 MB | Log2-transformed, median-imputed RNA training matrix. |
+| `X_test_rna_imp.npz` | $110 \times 20,155$ | ~18 MB | ~5.5 MB | Imputed RNA test matrix (imputed strictly using train medians). |
+| `X_train_meth_imp.npz` | $439 \times 20,106$ | ~70 MB | ~23 MB | Median-imputed Methylation beta training matrix. |
+| `X_test_meth_imp.npz` | $110 \times 20,106$ | ~17 MB | ~5.8 MB | Imputed Methylation test matrix. |
+| `X_train_rna_var.npz` | $439 \times 16,124$ | ~56 MB | ~23 MB | Variance-filtered & MinMax normalized RNA training matrix $[0, 1]$. |
+| `X_train_meth_var.npz` | $439 \times 16,084$ | ~56 MB | ~23 MB | Variance-filtered & MinMax normalized Methylation training matrix. |
 | `X_train_rna_anova.npz` | $439 \times 500$ | ~1.7 MB | ~752 KB | Top 500 ANOVA RNA features for training. |
 | `X_train_meth_anova.npz` | $439 \times 500$ | ~1.7 MB | ~758 KB | Top 500 ANOVA Methylation features for training. |
 | `X_train_rna_relief.npz` | $439 \times 150$ | ~526 KB | ~226 KB | Top 150 ReliefF RNA features for training. |
