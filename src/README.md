@@ -1,82 +1,37 @@
-# 📦 `src/` Module Documentation
+# `src/` module documentation
 
-The `src/` directory contains modular Python utilities and production-grade implementations of algorithms used across both the Jupyter notebooks and the standalone execution script (`run_pipeline.py`).
+The `src/` package exposes the shared IO, feature selection, leak-free fold transformation, hyperparameter tuning, statistical/survival analysis, and plotting functions used identically by all 6 notebooks and `run_pipeline.py`.
 
----
+## Module layout
 
-## 📂 Architecture Overview
-
-```
+```text
 src/
-├── __init__.py      # Package entry point exposing core API functions
-├── utils.py         # Primary module containing IO, feature selection, metrics, and tuning
-└── README.md        # Technical documentation and API references
+├── __init__.py   # Public package exports (24 symbols, v2.0.0)
+├── utils.py      # Core implementation
+└── README.md     # API reference
 ```
 
----
+## Public API
 
-## 🛠️ API & Core Functions
+### 1. IO and directory management
+- `resolve_dir(d='../outputs')`: Resolves relative output paths cleanly from either the repository root or `notebooks/`.
+- `ensure_directories(base_dir='../outputs')`: Creates `outputs/`, `models/`, `results/`, and `logs/`.
+- `save_object(obj, filename, output_dir='../outputs', prefer_format='auto')`: Saves DataFrames/Series as Parquet, NumPy arrays as compressed NPZ, and Python objects as Pickle. Creates only the target directory without spawning spurious nested subfolders.
+- `load_object(filename, input_dir='../outputs')`: Auto-loads Parquet (unwrapping 1D Series), NPZ, or Pickle artifacts.
 
-### 1. I/O & Directory Management
-- `resolve_dir(d='../outputs')`: Intelligently determines whether the calling script or notebook is executing from the project root or inside `notebooks/`, ensuring seamless cross-environment compatibility.
-- `ensure_directories(base_dir='../outputs')`: Guarantees required subdirectories (`models/`, `results/`, `logs/`) exist prior to saving outputs.
-- `save_object(obj, filename, output_dir='../outputs')`: Saves datasets with auto-detection of optimal formats:
-  - `pandas.DataFrame` / `pandas.Series` $\to$ Apache Parquet (`.parquet`)
-  - `numpy.ndarray` $\to$ Compressed NumPy Array (`.npz`)
-  - Generic Python objects / string lists $\to$ Pickle (`.pkl`)
-- `load_object(filename, input_dir='../outputs')`: Loads artifacts automatically detecting whether Parquet, NPZ, or Pickle is present.
+### 2. Multi-omics feature selection and leak-free fold transformation
+- `reliefF_multiclass(X, y, n_neighbors=10, n_features_to_select=150)` (alias `reliefF`): Vectorized Kononenko (1994) multi-class ReliefF with Manhattan distance (~0.08s on `439 x 500`, numerically matching brute-force weights within `3.3e-15`).
+- `mrmr_selection(X, y, k=50, method='mi_corr', random_state=42, n_features_to_select=None)` (alias `mrmr_feature_selection`): Supports Pearson redundancy (`'mi_corr'`) and vectorized `np.bincount` mutual information difference (`'mid'`).
+- `fit_transform_omics_fold(...)`: Single leak-free fold transformer running `SimpleImputer(median)` -> `VarianceThreshold(20th pct)` -> `MinMaxScaler(clip=True)` -> `SelectKBest(f_classif)` -> optional `reliefF_multiclass` -> optional `mrmr_selection` strictly on training rows and applying learned transforms to validation rows.
 
-### 2. Multi-Class Feature Selection Algorithms
-- `reliefF(X, y, n_features_to_select=150, n_neighbors=10)`:
-  - Multiclass-aware ReliefF implementation calculating feature relevance margins between nearest hits (same class) and nearest misses (differing classes).
-  - Handles multi-modal and mixed continuous biomedical signals with distance weighting.
-- `mrmr_feature_selection(X, y, n_features_to_select=50, variant='mi_corr')`:
-  - **Minimum Redundancy Maximum Relevance**:
-    - **Relevance**: Computed using mutual information with target labels ($I(X_i; Y)$ via `mutual_info_classif`).
-    - **Redundancy**: Computed using mean absolute Pearson correlation across currently selected features ($|r(X_i, X_s)|$) or mutual information ($I(X_i; X_s)$ for the true MID variant).
-    - Objective function: $\max_{X_i \in F \setminus S} \left[ I(X_i; Y) - \frac{1}{|S|} \sum_{X_s \in S} |r(X_i, X_s)| \right]$
+### 3. Model registry and leak-free hyperparameter tuning
+- `MODEL_SPECS` and `build_model_specs(random_state=42)`: Single source of truth defining estimators, parameter grids, class-weight support, and artifact filenames for `SVM (Linear)`, `Random Forest`, `KNN (Tuned)`, and `Logistic Regression (L2)`.
+- `tune_models_grid_search(X_train, y_train, cv=3, random_state=42, resampling=None, class_weight=None, return_params=False, n_jobs=-1, model_names=None)`: Runs stratified `GridSearchCV` optimized for `balanced_accuracy`. Under `resampling='smote'`, wraps `SMOTE` inside `imblearn.pipeline.Pipeline` so synthetic minority samples never cross inner CV folds.
 
-### 3. Statistical Metrics & Validation
-- `bootstrap_ci(y_true, y_pred, metric_func, n_bootstraps=1000, ci=95, random_state=42)`:
-  - Generates empirical 95% Bootstrap Confidence Intervals for model performance metrics (Accuracy, Macro F1, etc.).
-- `per_class_bootstrap_ci(y_true, y_pred, target_names, n_bootstraps=1000, ci=95, random_state=42)`:
-  - Computes class-specific Precision, Recall, and F1-Score confidence intervals. Crucial for assessing statistical robustness on small subgroups like HER2 ($N=7$).
-- `jaccard_similarity(set_a, set_b)`:
-  - Computes biomarker set overlap stability across cross-validation folds: $J(A, B) = \frac{|A \cap B|}{|A \cup B|}$.
-
-### 4. Hyperparameter Tuning & Visualization
-- `tune_models_grid_search(X, y, cv=3, random_state=42)`:
-  - Internal 3-fold stratified cross-validation for hyperparameter tuning on:
-    - **Linear SVM**: Grid search over $C \in [0.01, 0.1, 1, 10]$.
-    - **Random Forest**: Grid search over `n_estimators` $\in [100, 200, 300]$ and `max_depth` $\in [5, 10, \text{None}]$.
-    - **KNN**: Grid search over `n_neighbors` $\in [3, 5, 7, 9]$ and `weights` $\in ['\text{uniform}', '\text{distance}']$.
-- `plot_confusion_matrix(y_true, y_pred, target_names, title, save_path=None)`:
-  - Generates standardized confusion matrices using clean Matplotlib `Axes` handling, preventing blank figure bugs in interactive environments.
-
----
-
-## 💻 Quick Usage Example
-
-```python
-import numpy as np
-from src import (
-    load_object,
-    save_object,
-    mrmr_feature_selection,
-    tune_models_grid_search,
-    bootstrap_ci
-)
-
-# 1. Load preprocessed multi-omics data
-X_train = load_object('X_train_rna_relief')
-y_train = load_object('y_train')
-
-# 2. Select top 50 features via mRMR
-selected_indices, _, _ = mrmr_feature_selection(X_train, y_train, k=50)
-X_train_sub = X_train[:, selected_indices]
-
-# 3. Tune models in-fold
-best_models = tune_models_grid_search(X_train_sub, y_train, cv=3)
-rf_classifier = best_models['Random Forest']
-print("Tuned Random Forest:", rf_classifier)
-```
+### 4. Statistical, survival, and visualization utilities
+- `bootstrap_ci(...)` and `bootstrap_class_report(...)` (alias `per_class_bootstrap_ci`): Percentile 95% bootstrap CIs for overall metrics and per-subtype Recall, Precision, and F1.
+- `benjamini_hochberg(pvals)`: BH-FDR adjustment preserving NaN positions.
+- `compute_multiclass_roc_pr(y_true, y_proba, class_labels=None)`: One-vs-rest macro/weighted ROC-AUC, macro PR-AUC, and per-class curves.
+- `kaplan_meier_estimator(times, events)` and `logrank_test_multigroup(times, events, groups)`: Exact product-limit KM curve and Mantel-Cox G-group log-rank test.
+- `jaccard_similarity(set_a, set_b)`: Pairwise biomarker overlap index.
+- `plot_confusion_matrix(...)`, `plot_multiclass_roc(...)`, `plot_kaplan_meier(...)`, and `plot_ppi_network(...)`: Publication-ready Matplotlib/NetworkX plots with explicit Figure/Axes management.

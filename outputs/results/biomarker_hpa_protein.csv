@@ -1,0 +1,21 @@
+Canonical_Symbol,Ensembl_ID,Modality,UniProt,Breast_Normal_IHC,Subcellular_Location,RNA_Tissue_Specificity,RNA_Protein_Agreement,FDA_Drug_Target,Cancer_Related_Gene,Protein_Classes
+DNAAF11,ENSG00000129295,Methylation,Q86X45,Breast: not detected,"Mid piece, Principal piece",Tissue enhanced,approved,False,False,Disease related genes; Human disease related genes; Predicted intracellular proteins
+NADK2,ENSG00000152620,Methylation,Q4G0N4,Breast: medium,Mitochondria,Tissue enriched,enhanced,False,False,Disease related genes; Enzymes; Housekeeping proteins; Human disease related genes
+CSAD,ENSG00000139631,Methylation,Q9Y600,Breast: medium,"Endoplasmic reticulum, Vesicles, Plasma membrane",Low tissue specificity,approved,False,False,Enzymes; Metabolic proteins; Plasma proteins; Predicted intracellular proteins
+NUMA1,ENSG00000137497,Methylation,Q14980,Breast: high,Nucleoplasm,Low tissue specificity,enhanced,False,True,Cancer-related genes; Essential proteins; Housekeeping proteins; Human disease related genes
+NPFFR1,ENSG00000148734,Methylation,Q9GZQ6,N/A,,Group enriched,,False,False,G-protein coupled receptors; Predicted membrane proteins
+CRNKL1,ENSG00000101343,Methylation,Q9BZJ0,N/A,,Low tissue specificity,,False,False,Essential proteins; Housekeeping proteins; Plasma proteins; Predicted intracellular proteins
+CEP83,ENSG00000173588,Methylation,Q9Y592,Breast: medium,"Golgi apparatus, Vesicles, Primary cilium, Primary cilium transition zone",Low tissue specificity,approved,False,False,Disease related genes; Housekeeping proteins; Human disease related genes; Predicted intracellular proteins
+ESR1,ENSG00000091831,RNA,P03372,Breast: medium,"Nucleoplasm, Vesicles",Low tissue specificity,enhanced,True,True,Biomarker genes; Cancer-related genes; Disease related genes; FDA approved drug targets
+FOXA1,ENSG00000129514,RNA,P55317,Breast: low,"Nucleoplasm, Nucleoli fibrillar center",Tissue enhanced,enhanced,False,True,Cancer-related genes; Predicted intracellular proteins; Transcription factors
+GATA3,ENSG00000107485,RNA,P23771,Breast: medium,Nucleoplasm,Tissue enhanced,enhanced,False,True,Cancer-related genes; Disease related genes; Human disease related genes; Plasma proteins
+AURKA,ENSG00000087586,RNA,O14965,Breast: not detected,"Nucleoplasm, Mitotic spindle, Centrosome, Basal body, Cytosol",Low tissue specificity,approved,False,True,Cancer-related genes; Enzymes; Essential proteins; Human disease related genes
+CENPA,ENSG00000115163,RNA,P49450,Breast: low,Nucleoplasm,Tissue enhanced,enhanced,False,False,Essential proteins; Predicted intracellular proteins
+MLPH,ENSG00000115648,RNA,Q9BV36,Breast: medium,,Low tissue specificity,approved,False,False,Disease related genes; Human disease related genes; Plasma proteins; Predicted intracellular proteins
+BCL2,ENSG00000171791,RNA,P10415,Breast: medium,Mitochondria,Low tissue specificity,enhanced,True,True,Cancer-related genes; Disease related genes; FDA approved drug targets; Human disease related genes
+KDM4B,ENSG00000127663,RNA,O94953,N/A,"Nucleoplasm, Cytosol",Low tissue specificity,,False,False,Disease related genes; Enzymes; Housekeeping proteins; Human disease related genes
+CCNE1,ENSG00000105173,RNA,P24864,Breast: not detected,"Nucleoplasm, Cytosol",Tissue enhanced,approved,False,True,Cancer-related genes; Human disease related genes; Predicted intracellular proteins
+CA12,ENSG00000074410,RNA,O43570,Breast: medium,,Tissue enhanced,enhanced,True,False,Disease related genes; Enzymes; FDA approved drug targets; Human disease related genes
+TFF1,ENSG00000160182,RNA,P04155,Breast: not detected,,Tissue enriched,enhanced,False,True,Cancer-related genes; Plasma proteins; Predicted secreted proteins
+FOXC1,ENSG00000054598,RNA,Q12948,N/A,"Nucleoplasm, Cytosol",Group enriched,,False,False,Disease related genes; Human disease related genes; Plasma proteins; Predicted intracellular proteins
+CCDC170,ENSG00000120262,RNA,Q8IYT3,Breast: not detected,"Golgi apparatus, Cell Junctions",Tissue enhanced,enhanced,False,False,Predicted intracellular proteins

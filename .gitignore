@@ -62,3 +62,8 @@ outputs/logs/
 GEMINI.md
 update_all_notebooks.py
 .licenses/
+
+# Large raw external database exports and redundant secondary plots
+outputs/results/reactome_top_pathway_diagram.png
+outputs/results/string_ppi_network_highres.png
+outputs/results/kaplan_meier_survival_test_predicted.png

@@ -1,0 +1,36 @@
+Target_Symbol,Ensembl_ID,Modality,Drug_Name,ChEMBL_ID,Drug_Type,Max_Clinical_Stage,Breast_Indications
+AURKA,ENSG00000087586,RNA,ENMD-2076,CHEMBL482968,Small molecule,PHASE_2,triple-negative breast carcinoma
+AURKA,ENSG00000087586,RNA,ALISERTIB,CHEMBL483158,Small molecule,PHASE_3,breast cancer
+AURKA,ENSG00000087586,RNA,AMG-900,CHEMBL2140408,Small molecule,PHASE_1,triple-negative breast carcinoma
+AURKA,ENSG00000087586,RNA,ENMD-981693,CHEMBL52885,Small molecule,PHASE_2,breast carcinoma
+ESR1,ENSG00000091831,RNA,ARZOXIFENE,CHEMBL226267,Small molecule,PHASE_4,breast cancer
+ESR1,ENSG00000091831,RNA,ESTRIOL,CHEMBL193482,Small molecule,PHASE_4,breast cancer
+ESR1,ENSG00000091831,RNA,TOREMIFENE,CHEMBL1655,Small molecule,PHASE_4,breast cancer; breast neoplasm; ductal breast carcinoma in situ
+ESR1,ENSG00000091831,RNA,"ESTROGENS, ESTERIFIED",CHEMBL1201468,Unknown,APPROVAL,breast cancer
+ESR1,ENSG00000091831,RNA,TOREMIFENE CITRATE,CHEMBL1200675,Small molecule,PHASE_4,breast cancer; breast carcinoma
+ESR1,ENSG00000091831,RNA,IDOXIFENE,CHEMBL6318,Small molecule,PHASE_3,breast cancer
+ESR1,ENSG00000091831,RNA,DIENESTROL,CHEMBL1018,Small molecule,WITHDRAWAL,breast cancer
+ESR1,ENSG00000091831,RNA,ESTETROL,CHEMBL6068423,Small molecule,PHASE_4,breast cancer; estrogen-receptor positive breast cancer
+ESR1,ENSG00000091831,RNA,AMCENESTRANT,CHEMBL4475463,Small molecule,PHASE_3,breast cancer; estrogen-receptor positive breast cancer; breast neoplasm
+ESR1,ENSG00000091831,RNA,TAMOXIFEN CITRATE,CHEMBL786,Small molecule,PHASE_4,breast cancer; breast adenocarcinoma; inflammatory breast carcinoma; ductal breast carcinoma in situ; estrogen-receptor positive breast cancer
+ESR1,ENSG00000091831,RNA,QUINESTROL,CHEMBL1201165,Small molecule,APPROVAL,breast cancer
+ESR1,ENSG00000091831,RNA,FULVESTRANT,CHEMBL1358,Small molecule,PHASE_4,breast cancer; breast carcinoma; breast neoplasm; ductal breast carcinoma in situ; estrogen-receptor positive breast cancer; invasive lobular breast carcinoma; progesterone-recepto
+ESR1,ENSG00000091831,RNA,BAZEDOXIFENE,CHEMBL46740,Small molecule,APPROVAL,breast cancer; ductal breast carcinoma in situ
+ESR1,ENSG00000091831,RNA,ETHINYL ESTRADIOL,CHEMBL691,Small molecule,PHASE_4,breast cancer
+ESR1,ENSG00000091831,RNA,GIREDESTRANT,CHEMBL4650316,Small molecule,PHASE_3,breast cancer; estrogen-receptor positive breast cancer
+ESR1,ENSG00000091831,RNA,ELACESTRANT,CHEMBL4297509,Small molecule,APPROVAL,breast cancer; breast neoplasm; ductal breast carcinoma in situ
+ESR1,ENSG00000091831,RNA,CAMIZESTRANT,CHEMBL4650365,Small molecule,PREAPPROVAL,breast neoplasm; breast cancer
+ESR1,ENSG00000091831,RNA,TAMOXIFEN,CHEMBL83,Small molecule,PHASE_4,breast cancer; breast adenocarcinoma; breast carcinoma; ductal breast carcinoma in situ; invasive ductal breast carcinoma; estrogen-receptor positive breast cancer; estrogen-recept
+ESR1,ENSG00000091831,RNA,"ESTROGENS, CONJUGATED",CHEMBL1201649,Unknown,PHASE_4,breast cancer
+ESR1,ENSG00000091831,RNA,TAS-108,CHEMBL3545210,Small molecule,PHASE_2,breast cancer
+ESR1,ENSG00000091831,RNA,BRILANESTRANT,CHEMBL3581693,Small molecule,PHASE_2,breast cancer
+ESR1,ENSG00000091831,RNA,ACOLBIFENE,CHEMBL68055,Small molecule,PHASE_3,breast cancer
+ESR1,ENSG00000091831,RNA,DROLOXIFENE,CHEMBL487,Small molecule,PHASE_2,breast cancer
+ESR1,ENSG00000091831,RNA,LASOFOXIFENE,CHEMBL328190,Small molecule,WITHDRAWAL,breast cancer
+ESR1,ENSG00000091831,RNA,AFIMOXIFENE,CHEMBL489,Small molecule,PHASE_2,breast cancer; breast ductal adenocarcinoma; ductal breast carcinoma in situ; estrogen-receptor positive breast cancer
+ESR1,ENSG00000091831,RNA,ESTRADIOL,CHEMBL135,Small molecule,WITHDRAWAL,breast cancer; triple-negative breast carcinoma
+ESR1,ENSG00000091831,RNA,ELACESTRANT HYDROCHLORIDE,CHEMBL4594273,Small molecule,APPROVAL,breast neoplasm; male breast carcinoma; breast cancer
+ESR1,ENSG00000091831,RNA,RALOXIFENE,CHEMBL81,Small molecule,PHASE_4,breast cancer
+BCL2,ENSG00000171791,RNA,OBLIMERSEN SODIUM,CHEMBL2109229,Oligonucleotide,PHASE_3,breast cancer
+BCL2,ENSG00000171791,RNA,NAVITOCLAX,CHEMBL443684,Small molecule,APPROVAL,breast cancer
+BCL2,ENSG00000171791,RNA,VENETOCLAX,CHEMBL3137309,Small molecule,PHASE_4,breast cancer

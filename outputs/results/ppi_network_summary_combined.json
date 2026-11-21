@@ -1,0 +1,10 @@
+{
+  "number_of_nodes": 47.0,
+  "number_of_edges": 51.0,
+  "average_node_degree": 2.17,
+  "local_clustering_coefficient": 0.454,
+  "expected_number_of_edges": 13.0,
+  "p_value": 3e-15,
+  "mapped_genes": 47,
+  "submitted_genes": 50
+}

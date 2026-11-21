@@ -1,0 +1,16 @@
+{
+  "ESR1": {
+    "gene": "ESR1",
+    "uniprot_accession": "P03372",
+    "cif_rel_path": "structures/P03372/AF-P03372-F1-model_v6.cif",
+    "plddt_analysis": "[*] AlphaFold pLDDT Metrics for Accession: P03372\n-----------------------------------------------------------------\n  -> Overall Global pLDDT   : 66.44\n  -> Fraction Very Low (<50): 0.464 (46.4%)\n  -> Fraction Low (50-70)   : 0.032 (3.2%)\n  -> Fraction Confident     : 0.069 (6.9%)\n  -> Fraction Very High     : 0.435 (43.5%)\n-----------------------------------------------------------------\n[*] pLDDT Conclusion:\n  -> Protein has a mixture of confidently predicted structured domains and significant intrinsically disordered regions.",
+    "pae_analysis": "[*] Analyzing Predicted Aligned Error (PAE) from AF-P03372-F1-predicted_aligned_error_v6.json...\n  -> PAE Matrix Shape: 595x595\n  -> Mean Error: 23.49 \u00c5\n  -> Max Error: 31.00 \u00c5 (suggests max possible distance between domains)\n  -> Min Error: 0.00 \u00c5\n  -> Fraction of confident residue pairs (<5\u00c5 PAE): 14.2%\n\n[*] Domain Boundary Analysis:\n  -> Number of distinct Global Domains detected: 2\n     Domain 1: residues 181 - 253 (Length: 73 AAs)\n     Domain 2: residues 302 - 548 (Length: 247 AAs)\n\n[*] PAE Structural Conclusion:\n  -> The protein has 2 independently positioned global domains separated by truly flexible joints."
+  },
+  "AURKA": {
+    "gene": "AURKA",
+    "uniprot_accession": "O14965",
+    "cif_rel_path": "structures/O14965/AF-O14965-F1-model_v6.cif",
+    "plddt_analysis": "[*] AlphaFold pLDDT Metrics for Accession: O14965\n-----------------------------------------------------------------\n  -> Overall Global pLDDT   : 75.06\n  -> Fraction Very Low (<50): 0.308 (30.8%)\n  -> Fraction Low (50-70)   : 0.062 (6.2%)\n  -> Fraction Confident     : 0.069 (6.9%)\n  -> Fraction Very High     : 0.561 (56.1%)\n-----------------------------------------------------------------\n[*] pLDDT Conclusion:\n  -> Protein has a mixture of confidently predicted structured domains and significant intrinsically disordered regions.",
+    "pae_analysis": "[*] Analyzing Predicted Aligned Error (PAE) from AF-O14965-F1-predicted_aligned_error_v6.json...\n  -> PAE Matrix Shape: 403x403\n  -> Mean Error: 16.03 \u00c5\n  -> Max Error: 31.00 \u00c5 (suggests max possible distance between domains)\n  -> Min Error: 0.00 \u00c5\n  -> Fraction of confident residue pairs (<5\u00c5 PAE): 34.8%\n\n[*] Domain Boundary Analysis:\n  -> Number of distinct Global Domains detected: 1\n     Domain 1: residues 126 - 392 (Length: 267 AAs)\n\n[*] PAE Structural Conclusion:\n  -> The protein consists of a single well-folded, rigid composite domain."
+  }
+}
